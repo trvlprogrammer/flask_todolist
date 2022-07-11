@@ -1,0 +1,79 @@
+{% extends "header.html" %}
+{% block content %}
+    <div class="row">
+      <div class="col-sm">
+        <h1>{{ name }}</h1>
+      </div>
+      <div class="col-sm">
+        <div class="float-right pt-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#exampleModal">Import</button>
+          <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('todolist.export_todo') }}">Export</a>
+          <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('todolist.export_todo_email') }}">Export &#38; Email</a>
+        </div>        
+      </div>  
+    </div> 
+    {% if form %}    
+    <form method="post" id="postid" action="">
+      {{ form.hidden_tag() }}
+        <div class="form-group">  
+            {{ form.body.label }}<br>
+            {{ form.body(class="form-control") }}          
+          </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                    {{ form.date_todo.label }}<br>
+                    {{ form.date_todo(class="form-control") }} 
+                </div>                     
+              </div>
+              <div class="col">
+                <div class="form-group">
+                    {{ form.tags.label }}<br>
+                    {{ form.tags(class="form-control widget-many2many-tags") }} 
+                </div>     
+              </div>
+            </div>
+            <div class="form-group">
+              <p>{{ form.submit(class="btn btn-secondary btn-sm") }}</p>
+            </div>                     
+    </form>    
+    {% endif %}
+    {% for post in posts %}
+      {% include '_todo.html' %}
+    {% endfor %}
+    <div class="pt-2">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          {% if prev_url %}
+            <li class="page-item">
+              <a class="page-link" href="{{ prev_url }}" aria-label="Previous">            
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">            
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if next_url %}
+            <li class="page-item">
+              <a class="page-link" href="{{ next_url }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>       
+              </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#" aria-label="Next">            
+                <span aria-hidden="true">&raquo;</span>     
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+    {% include '_upload_modal.html' %}
+    
+{% endblock content %}

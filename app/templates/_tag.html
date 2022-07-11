@@ -1,0 +1,13 @@
+<div class="card border-success">
+    <div class="row my-3">
+        <div class="col-8"><span class="ml-3">{{tag.name}}</span></div>
+        <div class="col-4">
+            <div class="float-right mr-3">
+                <form name="delete_tag" id="delete_tag" method="post" action="{{ url_for('todolist.delete_tag',tag_id=tag.id) }}">
+                    <input class="btn btn-outline-danger btn-sm" type="submit" value="Delete">
+                </form> 
+            </div>            
+        </div>
+      </div>
+  </div>
+  <br/>

@@ -1,0 +1,14 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-sm">
+      <h1>Archive Todo</h1>
+    </div>
+    <div class="col-sm">
+        {% include '_upload_modal.html' %} 
+    </div>  
+  </div>
+    {% for post in posts %}
+    {% include '_todo.html' %}
+    {% endfor %}
+{% endblock content %}

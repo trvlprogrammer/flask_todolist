@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block header %}
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{url_for('todolist.index')}}">Todo</a>
+          </li>     
+          <li class="nav-item active">
+            <a class="nav-link" href="{{url_for('todolist.todo_archive')}}">Archive</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{url_for('todolist.tag_view')}}">Tags</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>
+          </li>      
+        </ul>
+      </nav>
+      
+    </header>
+  {% endblock header %}
+
+  

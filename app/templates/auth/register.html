@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="pt-5">
+  <div class="card">
+    <div class="card-body ">
+      <form method="post" id="register" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">  
+            {{ form.username.label }}       
+            {{ form.username(class="form-control") }}          
+        </div>
+        <div class="form-group"> 
+          {{ form.email.label }}           
+          {{ form.email(class="form-control") }} 
+        </div> 
+        <div class="form-group">  
+          {{ form.password.label }}  
+          {{ form.password(class="form-control") }}          
+        </div>   
+        <div class="form-group"> 
+          {{ form.password2.label }}  
+          {{ form.password2(class="form-control") }}          
+        </div> 
+        <div class="form-group">
+          <p>{{ form.submit(class="btn btn-secondary btn-sm") }}</p>
+      </div>   
+    </form>
+    <p>Have an account? <a href="{{ url_for('auth.login') }}">Click to Login</a></p>
+    </div>
+  </div>
+</div>
+{% endblock content %}
