@@ -114,12 +114,12 @@ def export_todo_file(current_user):
 @login_required
 def import_todo():
     if 'file' not in request.files:
-        flash('No file part')
+        flash('No file part','danger')
         return redirect(request.url)
     file = request.files['file']
     if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
+        flash('No selected file','danger')
+        return redirect(request.referrer)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file_path = os.path.join(current_app.config['UPLOAD_PATH'], filename)
