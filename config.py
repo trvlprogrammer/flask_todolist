@@ -22,5 +22,5 @@ class Config:
     ADMINS = ['doalfatih@gmail.com']
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
     UPLOAD_PATH = os.environ.get('UPLOAD_PATH')
-    ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS')
+    ALLOWED_EXTENSIONS = {'xls', 'xlsx'}
     
