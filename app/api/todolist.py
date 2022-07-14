@@ -10,6 +10,7 @@ from app.todolist.routes import export_todo_file, allowed_file
 from app.utils import mail
 from werkzeug.utils import secure_filename
 import openpyxl
+import os
 
 @bp.route("/todos", methods=["GET"])
 @jwt_required()
@@ -20,7 +21,7 @@ def get_todos():
         per_page = min(request.args.get('per_page', 10, type=int), 100)
         data = Post.to_collection_dict(Post.query.filter_by(author=current_user,active=active).order_by(Post.date_todo.asc()), page, per_page, 'api.get_todos',active=active)
         return api_response("success","Success get todolist", data)
-    except Exception(e): 
+    except Exception as e: 
         return api_response("error", "Error get data", {})
 
 @bp.route("/tags", methods=["GET"])
@@ -31,7 +32,7 @@ def get_tags():
         per_page = min(request.args.get('per_page', 10, type=int), 100)
         data = Tag.to_collection_dict(Tag.query.filter_by(tag_user=current_user), page, per_page, 'api.get_tags')
         return api_response("success","Success get todolist", data)
-    except Exception(e): 
+    except Exception as e: 
         return api_response("error", "Error get data", {})
 
 @bp.route("/todos", methods=["POST"])
@@ -50,7 +51,7 @@ def create_todo():
         db.session.add(post)
         db.session.commit()
         return api_response("success","Success create todolist", {})
-    except Exception(e):        
+    except Exception as e:        
         return api_response("error", "Error create data", {}) 
 
 @bp.route("/tags", methods=["POST"])
@@ -62,7 +63,7 @@ def create_tag():
         db.session.add(tag)
         db.session.commit()
         return api_response("success","Success create tag", {})
-    except Exception(e):
+    except Exception as e:
         return api_response("error","Failed create tag", {})
 
 @bp.route("/todos/<todo_id>", methods=["DELETE"])
@@ -72,7 +73,7 @@ def delete_todo(todo_id):
         Post.query.filter_by(id=todo_id).delete()
         db.session.commit()
         return api_response("success","Success delete todo", {})
-    except Exception(e):
+    except Exception as e:
         return api_response("error","Failed delete todo", {})
 
 @bp.route("/tags/<tag_id>", methods=["DELETE"])
@@ -82,7 +83,7 @@ def delete_tag(tag_id):
         Tag.query.filter_by(id=tag_id).delete()
         db.session.commit()
         return api_response("success","Success delete tag", {})
-    except Exception(e):
+    except Exception as e:
         return api_response("error","Failed delete tag", {})
 
 @bp.route('/todos/set_active/<todo_id>/<active>', methods=['POST'])
@@ -97,7 +98,7 @@ def todo_active_inactive(todo_id,active):
         post.active = eval(active)
         db.session.commit()
         return api_response("success","Success %s todo"%(status), {})
-    except Exception(e):
+    except Exception as e:
         return api_response("error","Failed %s todo"%(status), {})
 
 

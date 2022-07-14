@@ -97,7 +97,7 @@ def create_app(config_class=Config):
                 os.mkdir(export_path)
         app.config['EXPORT_PATH'] = export_path
     if not app.config['UPLOAD_PATH']:
-        upload_path = os.path.join(basedir,'upload')
+        upload_path = os.path.join(app.config['BASE_DIR'],'upload')
         if not os.path.exists(upload_path):
                 os.mkdir(upload_path)
         app.config['UPLOAD_PATH'] = upload_path      

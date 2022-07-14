@@ -54,7 +54,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         return api_response("success","User has been registered",{})
-    except Exception(e):
+    except Exception as e:
         return api_response("error","Error register user",{})
 
 @bp.route("/logout", methods=["DELETE"])
