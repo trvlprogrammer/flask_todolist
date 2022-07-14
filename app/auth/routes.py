@@ -15,6 +15,15 @@ def register():
         return redirect(url_for('todolist.index'))
     form = RegisterForm()
     if form.validate_on_submit():
+        if not form.username.data or not form.email.data or not form.password.data:
+            flash('Must include username, email and password fields','danger')
+            return render_template('auth/register.html', form=form)
+        if User.query.filter_by(username=form.username.data).first():
+            flash('Please use a different username','danger')
+            return render_template('auth/register.html', form=form)
+        if User.query.filter_by(email=form.email.data).first():
+            flash('Please use a different email address','danger')
+            return render_template('auth/register.html', form=form)
         user = User(username=form.username.data,email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)

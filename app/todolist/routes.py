@@ -30,7 +30,7 @@ def index():
         flash('Todo has been added', 'success')
         return redirect(url_for('todolist.index'))
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.filter_by(user_id=current_user.id,active=True).paginate(page, current_app.config['POSTS_PER_PAGE'])
+    posts = Post.query.filter_by(user_id=current_user.id,active=True).order_by(Post.date_todo.asc()).paginate(page, current_app.config['POSTS_PER_PAGE'])
     next_url = url_for('todolist.index', page=posts.next_num) if posts.has_next else None        
     prev_url = url_for('todolist.index', page=posts.prev_num) if posts.has_prev else None                
     return render_template('index.html',title='Todo', form=form, posts=posts.items, \

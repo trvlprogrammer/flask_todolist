@@ -8,6 +8,7 @@ from flask_mail import Mail
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
+from flask_jwt_extended import JWTManager
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -17,6 +18,15 @@ login.login_message = 'Please log in to access this page.'
 login.login_message_category = "danger"
 moment = Moment()
 mail = Mail()
+jwt = JWTManager()
+
+
+def api_response(status,message,data):
+    return {
+        "status" : status,
+        "message" : message,
+        "data" : data
+    }
 
 
 def create_app(config_class=Config):
@@ -28,6 +38,7 @@ def create_app(config_class=Config):
     login.init_app(app)
     moment.init_app(app)
     mail.init_app(app)
+    jwt.init_app(app)
 
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
@@ -38,6 +49,8 @@ def create_app(config_class=Config):
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
 
+    from app.api import bp as api_bp
+    app.register_blueprint(api_bp,url_prefix='/api')
 
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:
@@ -56,14 +69,13 @@ def create_app(config_class=Config):
             mail_handler.setLevel(logging.ERROR)
             app.logger.addHandler(mail_handler)
 
-        basedir = os.path.abspath(os.path.dirname(__file__))
 
         if app.config['LOG_TO_STDOUT']:
             stream_handler = logging.StreamHandler()
             stream_handler.setLevel(logging.INFO)
             app.logger.addHandler(stream_handler)        
         else :
-            log_path = os.path.join(basedir,'logs')
+            log_path = os.path.join(app.config['BASE_DIR'],'logs')
             if app.config['LOG_PATH']:
                 log_path = app.config['LOG_PATH']
             elif not os.path.exists(log_path):
@@ -80,7 +92,7 @@ def create_app(config_class=Config):
             app.logger.info('Todolist Startup')
 
     if not app.config['EXPORT_PATH']:
-        export_path = os.path.join(basedir,'export') 
+        export_path = os.path.join(app.config['BASE_DIR'],'export') 
         if not os.path.exists(export_path):
                 os.mkdir(export_path)
         app.config['EXPORT_PATH'] = export_path
